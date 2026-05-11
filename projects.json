@@ -7,5 +7,14 @@
     "year": "2024",
     "duration": "3 Weeks",
     "color": "#00e5a0"
+  },
+  {
+    "file": "upi-case-study-v2.html",
+    "title": "UPI Case Study",
+    "subtitle": "Your subtitle here",
+    "tags": ["UX", "Fintech"],
+    "year": "2026",
+    "duration": "2 Weeks",
+    "color": "#4d9fff"
   }
 ]
