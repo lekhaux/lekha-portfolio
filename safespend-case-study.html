@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeSpend AI — Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f14;
+    --surface: #131920;
+    --surface2: #1a2330;
+    --border: #1f2e3f;
+    --accent: #00e5a0;
+    --accent2: #ff6b35;
+    --accent3: #4d9fff;
+    --text: #e8eef5;
+    --muted: #6b8199;
+    --warn: #ffb547;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── LAYOUT ─── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+  section { padding: 88px 0; }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding: 120px 0 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -120px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(0,229,160,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(0,229,160,0.25);
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(42px, 7vw, 72px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 560px;
+    margin-bottom: 48px;
+    font-weight: 300;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .meta-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* ─── SECTION LABELS ─── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  .section-body {
+    color: var(--muted);
+    font-size: 17px;
+    max-width: 680px;
+    font-weight: 300;
+  }
+
+  /* ─── CALLOUT BLOCK ─── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    background: rgba(0,229,160,0.04);
+    border-radius: 0 8px 8px 0;
+    margin: 32px 0;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  /* ─── PROBLEM CARDS ─── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 600px) { .problem-grid { grid-template-columns: 1fr; } }
+
+  .problem-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .problem-card:hover { border-color: rgba(0,229,160,0.3); }
+
+  .problem-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .problem-card:hover::before { opacity: 1; }
+
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .card-body { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* ─── EMI COMPARISON TABLE ─── */
+  .comparison-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .table-header-cell {
+    padding: 16px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .table-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .table-row:last-child { border-bottom: none; }
+
+  .table-cell {
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+
+  .table-cell.feature { color: var(--muted); font-size: 13px; }
+
+  .table-cell.typical {
+    color: var(--accent2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .table-cell.safespend {
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .icon-bad { color: var(--accent2); }
+  .icon-good { color: var(--accent); }
+
+  /* ─── RESEARCH ─── */
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 40px 0;
+  }
+
+  @media (max-width: 680px) {
+    .research-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label { font-size: 12px; color: var(--muted); }
+
+  /* ─── INSIGHTS ─── */
+  .insight-list { display: flex; flex-direction: column; gap: 24px; margin-top: 40px; }
+
+  .insight-item {
+    display: flex;
+    gap: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: border-color 0.3s;
+  }
+
+  .insight-item:hover { border-color: rgba(77,159,255,0.3); }
+
+  .insight-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--border);
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 40px;
+  }
+
+  .insight-content h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .insight-content p { font-size: 14px; color: var(--muted); }
+
+  /* ─── SPENDING CHART ─── */
+  .chart-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin-top: 32px;
+  }
+
+  .chart-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .chart-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+
+  .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 120px; position: relative; }
+
+  .bar-chart::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    min-width: 0;
+    position: relative;
+    transition: opacity 0.2s;
+    cursor: default;
+  }
+
+  .bar.low { background: var(--surface2); }
+  .bar.medium { background: rgba(77,159,255,0.4); }
+  .bar.high { background: rgba(255,107,53,0.7); }
+  .bar.peak { background: var(--accent2); }
+
+  .time-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 20px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ─── FEATURES ─── */
+  .feature-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-top: 56px;
+    padding-top: 56px;
+    border-top: 1px solid var(--border);
+  }
+
+  .feature-block:first-of-type { border-top: none; margin-top: 40px; padding-top: 0; }
+
+  @media (max-width: 640px) { .feature-block { grid-template-columns: 1fr; } }
+
+  .feature-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+
+  .feature-tag.green { background: rgba(0,229,160,0.12); color: var(--accent); }
+  .feature-tag.orange { background: rgba(255,107,53,0.12); color: var(--accent2); }
+  .feature-tag.blue { background: rgba(77,159,255,0.12); color: var(--accent3); }
+  .feature-tag.yellow { background: rgba(255,181,71,0.12); color: var(--warn); }
+
+  .feature-text h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+
+  .feature-text p { font-size: 15px; color: var(--muted); margin-bottom: 20px; }
+
+  .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+  .bullet-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .bullet-list li::before {
+    content: '→';
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ─── MOCKUP SCREENS ─── */
+  .phone-frame {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 20px 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .phone-frame::before {
+    content: '';
+    display: block;
+    width: 60px; height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    margin: 0 auto 20px;
+  }
+
+  .screen-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  /* EMI Mock */
+  .emi-mock { display: flex; flex-direction: column; gap: 10px; }
+
+  .emi-product-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .emi-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .emi-label { font-size: 11px; color: var(--muted); }
+
+  .emi-breakdown {
+    background: rgba(0,229,160,0.05);
+    border: 1px solid rgba(0,229,160,0.2);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .breakdown-row .label { color: var(--muted); }
+  .breakdown-row .value { color: var(--text); font-family: 'DM Mono', monospace; }
+  .breakdown-row .value.warn { color: var(--warn); }
+  .breakdown-row .value.danger { color: var(--accent2); }
+
+  .breakdown-divider { height: 1px; background: var(--border); }
+
+  .stress-bar-wrap { margin-top: 4px; }
+  .stress-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+
+  .stress-bar-track {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .stress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--warn) 60%, var(--accent2));
+    width: 72%;
+  }
+
+  /* Scam mock */
+  .scam-mock { display: flex; flex-direction: column; gap: 10px; }
+
+  .scam-header {
+    text-align: center;
+    padding: 8px 0 4px;
+  }
+
+  .scam-icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .scam-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 4px;
+  }
+
+  .scam-sub { font-size: 11px; color: var(--muted); }
+
+  .scam-detail {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  .scam-detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    padding: 3px 0;
+  }
+
+  .scam-detail-row .key { color: var(--muted); }
+  .scam-detail-row .val { color: var(--text); font-family: 'DM Mono', monospace; font-size: 10px; }
+
+  .risk-meter {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .risk-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .risk-row .label { font-size: 11px; color: var(--muted); }
+  .risk-score { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent2); }
+
+  .signals { display: flex; flex-direction: column; gap: 4px; }
+
+  .signal-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,107,53,0.1);
+    border: 1px solid rgba(255,107,53,0.2);
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 10px;
+    color: var(--accent2);
+  }
+
+  /* Spending mock */
+  .spending-mock { display: flex; flex-direction: column; gap: 10px; }
+
+  .spend-summary {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .spend-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .spend-caption { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  .spend-timing {
+    background: rgba(255,181,71,0.08);
+    border: 1px solid rgba(255,181,71,0.2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--warn);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mini-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 40px;
+    margin-top: 4px;
+  }
+
+  .mini-bar {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    background: var(--surface2);
+  }
+
+  .mini-bar.this { background: rgba(0,229,160,0.7); }
+  .mini-bar.avg { background: var(--surface2); }
+
+  .wait-btn {
+    background: rgba(0,229,160,0.1);
+    border: 1px solid rgba(0,229,160,0.3);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    cursor: pointer;
+  }
+
+  .proceed-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  /* ─── TRADEOFFS ─── */
+  .tradeoff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 680px) { .tradeoff-grid { grid-template-columns: 1fr; } }
+
+  .tradeoff-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .tradeoff-vs {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tradeoff-vs .side1 { color: var(--accent2); }
+  .tradeoff-vs .sep { color: var(--border); }
+  .tradeoff-vs .side2 { color: var(--accent3); }
+
+  .tradeoff-decision {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .tradeoff-decision strong { color: var(--accent); font-weight: 500; }
+
+  /* ─── METRICS ─── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 640px) { .metrics-grid { grid-template-columns: 1fr 1fr; } }
+
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+  }
+
+  .metric-bar-wrap { margin-top: 12px; }
+
+  .metric-bar-track {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .metric-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+  }
+
+  .metric-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .metric-value { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--text); }
+  .metric-unit { font-size: 12px; color: var(--muted); }
+
+  /* ─── MVP ─── */
+  .mvp-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 580px) { .mvp-split { grid-template-columns: 1fr; } }
+
+  .mvp-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .mvp-box.included { border-color: rgba(0,229,160,0.2); }
+  .mvp-box.excluded { border-color: var(--border); opacity: 0.7; }
+
+  .mvp-box-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .mvp-box.included .mvp-box-label { color: var(--accent); }
+  .mvp-box.excluded .mvp-box-label { color: var(--muted); }
+
+  .mvp-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .mvp-item:last-child { border-bottom: none; }
+
+  .mvp-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .mvp-box.included .mvp-dot { background: var(--accent); }
+  .mvp-box.excluded .mvp-dot { background: var(--border); }
+
+  /* ─── OUTCOME ─── */
+  .outcome-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 56px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin: 80px 0;
+  }
+
+  .outcome-section::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(ellipse, rgba(0,229,160,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .outcome-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .outcome-section p { font-size: 16px; color: var(--muted); max-width: 580px; margin: 0 auto; line-height: 1.7; }
+
+  .shift-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    margin-bottom: 32px;
+  }
+
+  .shift-pill .from { color: var(--accent2); }
+  .shift-pill .arrow { color: var(--muted); }
+  .shift-pill .to { color: var(--accent); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">Case Study · Fintech · UX · AI Systems</div>
+    <h1>SafeSpend <span>AI</span></h1>
+    <p class="hero-subtitle">Designing a preventive financial decision system for smarter spending & scam protection.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Role</span>
+        <span class="meta-value">Product Designer</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Timeline</span>
+        <span class="meta-value">3 Weeks</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Domain</span>
+        <span class="meta-value">Fintech · AI · Behavioral</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- OVERVIEW -->
+<section>
+  <div class="container">
+    <div class="section-label">Project Overview</div>
+    <h2 class="section-title">Fintech optimizes for speed.<br>SafeSpend optimizes for decisions.</h2>
+    <p class="section-body">Today's fintech products are precision-engineered for one outcome: transaction completion. Faster payments, seamless checkout, frictionless EMI onboarding. These systems perform exceptionally at conversion — but they do so by systematically reducing the space for deliberate financial thinking.</p>
+
+    <div class="problem-grid" style="margin-top:40px">
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(255,107,53,0.1)">⚡</div>
+        <div class="card-title">What fintech optimizes for</div>
+        <div class="card-body">Faster payments · Seamless checkout · One-click EMI activation · Increased conversion rates · Frictionless transactions</div>
+      </div>
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(255,181,71,0.1)">⚠️</div>
+        <div class="card-title">What this inadvertently enables</div>
+        <div class="card-body">Impulsive spending patterns · Hidden debt accumulation · Scam payment approvals · Subscription leakage · Financial regret</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      SafeSpend AI introduces an AI-assisted decision layer between user intent and financial commitment — not to block transactions, but to create meaningful pause.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROBLEM -->
+<section>
+  <div class="container">
+    <div class="section-label">Problem</div>
+    <h2 class="section-title">Transaction speed ≠ decision quality</h2>
+    <p class="section-body">Most fintech products are optimized for transaction completion, not decision quality. Two patterns illustrate this clearly.</p>
+
+    <!-- EMI Example -->
+    <div style="margin-top:48px">
+      <div class="feature-tag orange">Real-World Example 01</div>
+      <h3 class="section-title" style="font-size:22px;margin-top:8px">Deceptive EMI Design</h3>
+      <p class="section-body">A user wants to purchase a ₹78,000 smartphone. The checkout screen anchors their attention on one number: <strong style="color:var(--text)">₹3,249/month</strong>. Everything else — total repayment, processing fees, stacked debt — is either hidden or minimized.</p>
+
+      <div style="margin-top:32px">
+        <div class="comparison-table">
+          <div class="table-header">
+            <div class="table-header-cell">UI Element</div>
+            <div class="table-header-cell">Typical Fintech</div>
+            <div class="table-header-cell">SafeSpend AI</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell feature">Primary CTA</div>
+            <div class="table-cell typical">✗ Large EMI button only</div>
+            <div class="table-cell safespend">✓ Full repayment breakdown</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell feature">Cost framing</div>
+            <div class="table-cell typical">✗ "No Cost EMI" badge</div>
+            <div class="table-cell safespend">✓ Debt impact visualization</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell feature">Checkout flow</div>
+            <div class="table-cell typical">✗ Fast, single-step</div>
+            <div class="table-cell safespend">✓ Financial stress indicator</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell feature">Existing debt context</div>
+            <div class="table-cell typical">✗ Never shown</div>
+            <div class="table-cell safespend">✓ Stacked burden timeline</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell feature">User intent</div>
+            <div class="table-cell typical">✗ Reduce hesitation</div>
+            <div class="table-cell safespend">✓ Surface informed choice</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scam Example -->
+    <div style="margin-top:56px">
+      <div class="feature-tag orange">Real-World Example 02</div>
+      <h3 class="section-title" style="font-size:22px;margin-top:8px">UPI Scam Approval</h3>
+      <p class="section-body">Users frequently approve fraudulent payment requests because the interfaces feel familiar, approval flows are fast, and warnings are generic. Current systems verify authentication — but rarely evaluate behavioral risk. The interface looks legitimate, so the user assumes it is.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RESEARCH -->
+<section>
+  <div class="container">
+    <div class="section-label">Research</div>
+    <h2 class="section-title">Understanding the decision gap</h2>
+    <p class="section-body">The research goal was to understand why users ignore financial warnings, how impulsive spending happens, what makes scam interfaces believable, and where financial regret originates.</p>
+
+    <div class="research-grid">
+      <div class="stat-card">
+        <div class="stat-number">12</div>
+        <div class="stat-label">User Interviews</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">84</div>
+        <div class="stat-label">Survey Responses</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">7</div>
+        <div class="stat-label">Fintech Apps Audited</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Core Behavior Patterns</div>
+      </div>
+    </div>
+
+    <!-- Key Insights -->
+    <div class="insight-list">
+      <div class="insight-item">
+        <div class="insight-number">01</div>
+        <div class="insight-content">
+          <h4>Users Think in Monthly EMIs, Not Total Cost</h4>
+          <p>Most participants evaluated affordability through monthly payment amount and short-term convenience. Very few spontaneously calculated total repayment, stacked debt impact, or projected future financial stress. The monthly frame is cognitively cheaper — and interfaces exploit this.</p>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-number">02</div>
+        <div class="insight-content">
+          <h4>Generic Warnings Are Functionally Invisible</h4>
+          <p>Alerts like "Are you sure?" were dismissed almost instantly. Users responded meaningfully only when systems explained why the action was risky, what impact it might create, and how confident the system was in its assessment. Context transforms a warning from noise into signal.</p>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-number">03</div>
+        <div class="insight-content">
+          <h4>Emotional Spending Has Predictable Patterns</h4>
+          <p>Impulsive spending was not random. It concentrated around late-night hours (10 PM – 1 AM), immediately after stressful events, during urgency sales, and in the days following salary credits. These patterns are detectable — and therefore interruptible.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Behavioral Chart -->
+    <div class="chart-container">
+      <div class="chart-title">Late-Night Spending Spike</div>
+      <div class="chart-subtitle">Impulsive transaction frequency by hour of day</div>
+      <div class="bar-chart">
+        <!-- 6am to 2am bars (20 bars) -->
+        <div class="bar low" style="height:18%"></div>
+        <div class="bar low" style="height:14%"></div>
+        <div class="bar low" style="height:22%"></div>
+        <div class="bar medium" style="height:35%"></div>
+        <div class="bar medium" style="height:42%"></div>
+        <div class="bar medium" style="height:38%"></div>
+        <div class="bar medium" style="height:45%"></div>
+        <div class="bar medium" style="height:40%"></div>
+        <div class="bar medium" style="height:36%"></div>
+        <div class="bar medium" style="height:30%"></div>
+        <div class="bar medium" style="height:28%"></div>
+        <div class="bar medium" style="height:32%"></div>
+        <div class="bar high" style="height:55%"></div>
+        <div class="bar high" style="height:68%"></div>
+        <div class="bar peak" style="height:88%"></div>
+        <div class="bar peak" style="height:100%"></div>
+        <div class="bar peak" style="height:92%"></div>
+        <div class="bar high" style="height:74%"></div>
+        <div class="bar medium" style="height:48%"></div>
+        <div class="bar low" style="height:24%"></div>
+      </div>
+      <div class="time-labels">
+        <span>6 AM</span>
+        <span>12 PM</span>
+        <span>6 PM</span>
+        <span>10 PM</span>
+        <span>1 AM</span>
+      </div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--surface2)"></div>Low risk window</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(77,159,255,0.4)"></div>Moderate activity</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,107,53,0.7)"></div>Elevated impulsivity</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div>Peak risk zone</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      How might we design a preventive financial layer that improves decision quality without creating excessive friction?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOLUTION / FEATURES -->
+<section>
+  <div class="container">
+    <div class="section-label">Solution</div>
+    <h2 class="section-title">An AI decision layer, not a payment blocker</h2>
+    <p class="section-body">SafeSpend AI evaluates transaction timing, spending behavior, merchant trust, affordability risk, and emotional spending patterns — then determines whether intervention is necessary, and at what intensity.</p>
+
+    <!-- Feature 1: Emotional Spending -->
+    <div class="feature-block">
+      <div class="feature-text">
+        <div class="feature-tag green">Feature 01</div>
+        <h3>Emotional Spending Intervention</h3>
+        <p>A user attempts an ₹18,000 sneaker purchase at 12:14 AM after already exceeding discretionary spending trends. The system detects unusual purchase timing, elevated spending frequency, and budget pressure indicators — and responds proportionally.</p>
+        <ul class="bullet-list">
+          <li>Projected balance after purchase</li>
+          <li>Monthly spending comparison vs. average</li>
+          <li>Financial pressure indicator</li>
+          <li>Optional "wait 24 hours" reminder</li>
+          <li>Full user control — never a hard block</li>
+        </ul>
+      </div>
+      <div class="phone-frame">
+        <div class="screen-label">Spending Intervention</div>
+        <div class="spending-mock">
+          <div class="spend-summary">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Purchase amount</div>
+            <div class="spend-amount">₹18,000</div>
+            <div class="spend-caption">Nike Air Max — Late Night Purchase</div>
+          </div>
+          <div class="spend-timing">⏰ 12:14 AM · Outside typical spending hours</div>
+          <div class="emi-breakdown">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-family:'DM Mono',monospace;letter-spacing:0.08em;text-transform:uppercase">Financial Impact</div>
+            <div class="breakdown-row"><span class="label">Balance after purchase</span><span class="value warn">₹4,320</span></div>
+            <div class="breakdown-row"><span class="label">This month vs. avg</span><span class="value danger">+148%</span></div>
+            <div class="breakdown-row"><span class="label">Budget status</span><span class="value danger">Exceeded</span></div>
+            <div class="breakdown-divider"></div>
+            <div class="stress-bar-wrap">
+              <div class="stress-bar-label"><span>Financial Pressure</span><span style="color:var(--accent2)">High</span></div>
+              <div class="stress-bar-track"><div class="stress-bar-fill"></div></div>
+            </div>
+          </div>
+          <div class="wait-btn">⏳ Remind me tomorrow</div>
+          <div class="proceed-btn">Continue with purchase</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2: Scam Detection -->
+    <div class="feature-block">
+      <div class="feature-text">
+        <div class="feature-tag orange">Feature 02</div>
+        <h3>Scam Pattern Detection</h3>
+        <p>The AI system analyzes suspicious UPI handles, urgency language, abnormal payment behavior, and known scam pattern signatures. When risk thresholds are crossed, the interface explains — not just warns.</p>
+        <ul class="bullet-list">
+          <li>Risk score with confidence level</li>
+          <li>Detected signals made visible</li>
+          <li>"Why this alert appeared" transparency</li>
+          <li>Recommended action, not forced block</li>
+          <li>Grounded in real-world scam taxonomies</li>
+        </ul>
+      </div>
+      <div class="phone-frame">
+        <div class="screen-label">Scam Warning</div>
+        <div class="scam-mock">
+          <div class="scam-header">
+            <span class="scam-icon">🚨</span>
+            <div class="scam-title">High Risk Payment Detected</div>
+            <div class="scam-sub">This request matches known scam patterns</div>
+          </div>
+          <div class="scam-detail">
+            <div class="scam-detail-row"><span class="key">UPI ID</span><span class="val" style="color:var(--accent2)">refund.help@ybl</span></div>
+            <div class="scam-detail-row"><span class="key">Amount</span><span class="val">₹4,999</span></div>
+            <div class="scam-detail-row"><span class="key">Message</span><span class="val" style="color:var(--warn)">"Urgent refund needed"</span></div>
+          </div>
+          <div class="risk-meter">
+            <div class="risk-row">
+              <span class="label">AI Confidence</span>
+              <span class="risk-score">91%</span>
+            </div>
+            <div class="signals">
+              <div class="signal-badge">⚠ Urgency language detected</div>
+              <div class="signal-badge">⚠ Unverified merchant ID</div>
+              <div class="signal-badge">⚠ Matches scam database</div>
+            </div>
+          </div>
+          <div class="proceed-btn" style="border-color:rgba(255,107,53,0.3);color:var(--accent2)">I understand the risk — proceed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3: EMI Transparency -->
+    <div class="feature-block">
+      <div class="feature-text">
+        <div class="feature-tag blue">Feature 03</div>
+        <h3>EMI Transparency Assistant</h3>
+        <p>Instead of displaying only ₹3,249/month, the interface visualizes total repayment, processing fees, stacked EMI burden, and projected financial stress — giving users the complete picture before commitment.</p>
+        <ul class="bullet-list">
+          <li>Full repayment amount surfaced prominently</li>
+          <li>Processing fee breakdown</li>
+          <li>Stacked debt burden visualization</li>
+          <li>Monthly affordability comparison</li>
+          <li>Financial stress projection over loan period</li>
+        </ul>
+      </div>
+      <div class="phone-frame">
+        <div class="screen-label">EMI Transparency</div>
+        <div class="emi-mock">
+          <div class="emi-product-line">
+            <div>
+              <div style="font-size:11px;color:var(--muted)">Samsung Galaxy S25 Ultra</div>
+              <div class="emi-amount">₹78,000</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--accent)">₹3,249<span style="color:var(--muted);font-size:10px">/mo</span></div>
+              <div style="font-size:10px;color:var(--muted)">24 months</div>
+            </div>
+          </div>
+          <div class="emi-breakdown">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-family:'DM Mono',monospace;letter-spacing:0.08em;text-transform:uppercase">Full Repayment Breakdown</div>
+            <div class="breakdown-row"><span class="label">Principal</span><span class="value">₹78,000</span></div>
+            <div class="breakdown-row"><span class="label">Processing fee</span><span class="value warn">₹1,950</span></div>
+            <div class="breakdown-row"><span class="label">Total interest</span><span class="value warn">₹3,640</span></div>
+            <div class="breakdown-divider"></div>
+            <div class="breakdown-row"><span class="label" style="color:var(--text);font-weight:500">Total repayment</span><span class="value danger" style="font-size:14px">₹83,590</span></div>
+          </div>
+          <div style="background:var(--surface2);border-radius:8px;padding:10px 12px">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Debt burden with existing EMIs</div>
+            <div class="mini-bars">
+              <div class="mini-bar avg" style="height:40%"></div>
+              <div class="mini-bar avg" style="height:40%"></div>
+              <div class="mini-bar avg" style="height:40%"></div>
+              <div class="mini-bar this" style="height:100%"></div>
+              <div class="mini-bar this" style="height:100%"></div>
+              <div class="mini-bar this" style="height:100%"></div>
+            </div>
+            <div style="font-size:10px;color:var(--muted);margin-top:6px">Monthly EMI load increases by <span style="color:var(--accent2)">68%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 4: Subscription Leak -->
+    <div class="feature-block">
+      <div class="feature-text">
+        <div class="feature-tag yellow">Feature 04</div>
+        <h3>Subscription Leak Detection</h3>
+        <p>The system identifies inactive subscriptions, duplicate services, and recurring low-value expenses. Instead of presenting long transaction lists, the AI prioritizes likely forgotten subscriptions and high-waste recurring payments.</p>
+        <ul class="bullet-list">
+          <li>Active vs. unused subscription tracking</li>
+          <li>Monthly leakage amount surfaced clearly</li>
+          <li>Cancellation recommendations with one tap</li>
+          <li>Duplicate service detection</li>
+          <li>Forgotten subscription prioritization</li>
+        </ul>
+      </div>
+      <div class="phone-frame">
+        <div class="screen-label">Subscription Dashboard</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
+            <div style="font-size:12px;color:var(--muted)">Monthly leakage detected</div>
+            <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent2)">₹2,340</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:10px;padding:12px">
+            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px">Likely Forgotten</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.15);border-radius:8px">
+                <div>
+                  <div style="font-size:13px;font-weight:500">LinkedIn Premium</div>
+                  <div style="font-size:10px;color:var(--muted)">Not used in 4 months</div>
+                </div>
+                <div style="font-size:12px;color:var(--accent2)">₹1,490/mo</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(255,181,71,0.06);border:1px solid rgba(255,181,71,0.15);border-radius:8px">
+                <div>
+                  <div style="font-size:13px;font-weight:500">Hotstar + Prime</div>
+                  <div style="font-size:10px;color:var(--muted)">Duplicate streaming</div>
+                </div>
+                <div style="font-size:12px;color:var(--warn)">₹499/mo</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+                <div>
+                  <div style="font-size:13px;font-weight:500">Grammarly Premium</div>
+                  <div style="font-size:10px;color:var(--muted)">Low usage last 60d</div>
+                </div>
+                <div style="font-size:12px;color:var(--muted)">₹351/mo</div>
+              </div>
+            </div>
+          </div>
+          <div style="background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--accent);text-align:center">Cancel all inactive — Save ₹1,989/mo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TRADEOFFS -->
+<section>
+  <div class="container">
+    <div class="section-label">Product Tradeoffs</div>
+    <h2 class="section-title">Honest tensions, deliberate decisions</h2>
+    <p class="section-body">Real product work means navigating competing priorities. These tradeoffs shaped every design decision in the system.</p>
+
+    <div class="tradeoff-grid">
+      <div class="tradeoff-card">
+        <div class="tradeoff-vs">
+          <span class="side1">Protection</span>
+          <span class="sep">vs</span>
+          <span class="side2">Conversion</span>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;">Aggressive warnings reduce transaction completion, EMI adoption, and platform revenue.</p>
+        <div class="tradeoff-decision"><strong>Decision:</strong> Adaptive intervention thresholds — not blanket blocking of risky actions.</div>
+      </div>
+      <div class="tradeoff-card">
+        <div class="tradeoff-vs">
+          <span class="side1">Accuracy</span>
+          <span class="sep">vs</span>
+          <span class="side2">Alert Fatigue</span>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;">Too many alerts erode user trust and train users to dismiss everything.</p>
+        <div class="tradeoff-decision"><strong>Decision:</strong> Only high-confidence risks trigger full intervention flows. Lower-confidence signals remain passive.</div>
+      </div>
+      <div class="tradeoff-card">
+        <div class="tradeoff-vs">
+          <span class="side1">Safety</span>
+          <span class="sep">vs</span>
+          <span class="side2">User Control</span>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;">Overprotective systems feel paternalistic and manipulative, driving disengagement.</p>
+        <div class="tradeoff-decision"><strong>Decision:</strong> Users retain final decision authority — except when fraud confidence is extremely high.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MVP SCOPE -->
+<section>
+  <div class="container">
+    <div class="section-label">MVP Scope</div>
+    <h2 class="section-title">Constrained intentionally</h2>
+    <p class="section-body">The first version focuses on the highest-impact, technically feasible interventions. Features excluded from MVP were not deprioritized for lack of value — they were deferred for launch realism.</p>
+
+    <div class="mvp-split">
+      <div class="mvp-box included">
+        <div class="mvp-box-label">Included in V1</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>Emotional Spending Intervention</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>Scam Pattern Detection</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>EMI Transparency Assistant</div>
+      </div>
+      <div class="mvp-box excluded">
+        <div class="mvp-box-label">Deferred Post-Launch</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>AI Financial Coaching</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>Automated Savings Systems</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>Family Safety Features</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>Cross-Bank Integrations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- METRICS -->
+<section>
+  <div class="container">
+    <div class="section-label">Success Metrics</div>
+    <h2 class="section-title">What good looks like</h2>
+    <p class="section-body">Both product and UX metrics are required. Scam prevention rates and impulsive purchase reduction tell one story. Warning engagement and false positive dissatisfaction tell another — and both matter.</p>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Scam Approvals</div>
+        <div class="metric-value">↓ <span>38</span><span class="metric-unit">%</span></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:38%"></div></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Impulsive Purchases</div>
+        <div class="metric-value">↓ <span>24</span><span class="metric-unit">%</span></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:24%"></div></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">EMI Reconsideration</div>
+        <div class="metric-value">↑ <span>61</span><span class="metric-unit">%</span></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:61%"></div></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Warning Engagement</div>
+        <div class="metric-value"><span>73</span><span class="metric-unit">%</span></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:73%"></div></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">User Trust Score</div>
+        <div class="metric-value"><span>4.4</span><span class="metric-unit">/5</span></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:88%"></div></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">False Positive Dissatisfaction</div>
+        <div class="metric-value">↓ <span>12</span><span class="metric-unit">%</span></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:12%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- OUTCOME -->
+<div class="container">
+  <div class="outcome-section">
+    <div class="shift-pill">
+      <span class="from">Transaction interfaces</span>
+      <span class="arrow">→</span>
+      <span class="to">Decision systems</span>
+    </div>
+    <h2>A different design philosophy for fintech</h2>
+    <p>This project reframed the design challenge from making transactions faster to making decisions better. The biggest challenge was balancing user protection, business goals, behavioral psychology, and friction management — without creating intrusive or paternalistic experiences.</p>
+    <p style="margin-top:20px">SafeSpend AI demonstrates how AI-assisted fintech systems can shift from transaction optimization toward decision-quality optimization. Instead of accelerating spending behavior, the product introduces contextual friction that helps users make safer and more informed financial decisions — on their terms.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    SafeSpend AI · Product Design Case Study · 3-Week Project
+  </div>
+</footer>
+
+</body>
+</html>

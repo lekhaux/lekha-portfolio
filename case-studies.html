@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Case Studies</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f14;
+    --surface: #131920;
+    --surface2: #1a2330;
+    --border: #1f2e3f;
+    --text: #e8eef5;
+    --muted: #6b8199;
+    --accent: #00e5a0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 60px 28px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* ── HEADER ── */
+  .header { margin-bottom: 56px; }
+
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 300;
+    max-width: 480px;
+  }
+
+  /* ── GRID ── */
+  #case-studies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 500px) {
+    #case-studies-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── CARD ── */
+  .case-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .case-card:hover {
+    border-color: var(--card-color, var(--accent));
+    transform: translateY(-4px);
+  }
+
+  .case-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-color, var(--accent));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .case-card:hover::before { opacity: 1; }
+
+  .case-card::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--card-color, var(--accent)), transparent 70%);
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  /* ── CARD HEADER ── */
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .card-index {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .card-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── CARD BODY ── */
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  .card-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 6px;
+  }
+
+  /* ── TAGS ── */
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface2);
+  }
+
+  /* ── CARD FOOTER ── */
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+
+  .card-duration {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .card-cta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--card-color, var(--accent));
+    transition: gap 0.2s;
+  }
+
+  .case-card:hover .card-cta { gap: 10px; }
+
+  /* ── LOADING STATE ── */
+  .loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .loading::after {
+    content: '';
+    display: block;
+    width: 24px; height: 24px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    margin: 16px auto 0;
+    animation: spin 0.8s linear infinite;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 40px;
+    color: var(--muted);
+  }
+
+  .empty h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .empty p { font-size: 14px; line-height: 1.6; }
+
+  .empty code {
+    display: inline-block;
+    margin-top: 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  /* ── HOW IT WORKS BANNER ── */
+  .how-it-works {
+    margin-top: 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .how-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
+  .how-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .how-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .how-body code {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Portfolio · Case Studies</div>
+    <h1>Selected Work</h1>
+    <p>Product design projects spanning fintech, AI systems, and behavioral UX.</p>
+  </div>
+
+  <!-- GRID — auto-populated from projects.json -->
+  <div id="case-studies-grid">
+    <div class="loading">Loading case studies</div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-it-works">
+    <div class="how-icon">⚡</div>
+    <div>
+      <div class="how-title">How to add a new case study</div>
+      <div class="how-body">
+        1. Add your <code>.html</code> file to this folder.<br>
+        2. Open <code>projects.json</code> and add one entry with the filename, title, tags, and color.<br>
+        3. Re-upload to Netlify — it appears automatically. No other files need editing.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  async function loadProjects() {
+    const grid = document.getElementById('case-studies-grid');
+
+    try {
+      // Fetch projects.json from same folder
+      const res = await fetch('./projects.json');
+      if (!res.ok) throw new Error('projects.json not found');
+      const projects = await res.json();
+
+      if (!projects.length) {
+        grid.innerHTML = `
+          <div class="empty">
+            <h3>No case studies yet</h3>
+            <p>Add entries to <code>projects.json</code> to see them here.</p>
+            <code>projects.json</code>
+          </div>`;
+        return;
+      }
+
+      // Render cards
+      grid.innerHTML = projects.map((p, i) => `
+        <a
+          class="case-card"
+          href="${p.file}"
+          style="--card-color: ${p.color || '#00e5a0'}; animation-delay: ${i * 0.08}s"
+        >
+          <div class="card-top">
+            <span class="card-index">${String(i + 1).padStart(2, '0')}</span>
+            <span class="card-year">${p.year || ''}</span>
+          </div>
+
+          <div>
+            <div class="card-title">${p.title}</div>
+            <div class="card-subtitle">${p.subtitle || ''}</div>
+          </div>
+
+          <div class="card-tags">
+            ${(p.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
+          </div>
+
+          <div class="card-footer">
+            <span class="card-duration">${p.duration ? p.duration : ''}</span>
+            <span class="card-cta">View Case Study →</span>
+          </div>
+        </a>
+      `).join('');
+
+    } catch (err) {
+      grid.innerHTML = `
+        <div class="empty">
+          <h3>Couldn't load projects</h3>
+          <p>Make sure <code>projects.json</code> is in the same folder as this file.</p>
+          <code>projects.json</code>
+        </div>`;
+    }
+  }
+
+  loadProjects();
+</script>
+
+</body>
+</html>
