@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SafeSpend AI — Case Study</title>
+<title>SafeSpend — Case Study</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -201,6 +201,8 @@
   }
 
   @media (max-width: 600px) { .problem-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 860px) { .problem-grid[style*="1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; } }
+  @media (max-width: 540px) { .problem-grid[style*="1fr 1fr 1fr"] { grid-template-columns: 1fr !important; } }
 
   .problem-card {
     background: var(--surface);
@@ -922,9 +924,9 @@
 <!-- HERO -->
 <section class="hero">
   <div class="container">
-    <div class="hero-tag">Case Study · Fintech · UX · AI Systems</div>
-    <h1>SafeSpend <span>AI</span></h1>
-    <p class="hero-subtitle">Designing a preventive financial decision system for smarter spending & scam protection.</p>
+    <div class="hero-tag">Case Study · Fintech · Decision-Support UX</div>
+    <h1>SafeSpend</h1>
+    <p class="hero-subtitle">A contextual spending review system that helps users pause and reflect before high-risk financial decisions.</p>
     <div class="hero-meta">
       <div class="meta-item">
         <span class="meta-label">Role</span>
@@ -936,7 +938,7 @@
       </div>
       <div class="meta-item">
         <span class="meta-label">Domain</span>
-        <span class="meta-value">Fintech · AI · Behavioral</span>
+        <span class="meta-value">Fintech · Interaction Design</span>
       </div>
     </div>
   </div>
@@ -948,8 +950,8 @@
 <section>
   <div class="container">
     <div class="section-label">Project Overview</div>
-    <h2 class="section-title">Fintech optimizes for speed.<br>SafeSpend optimizes for decisions.</h2>
-    <p class="section-body">Today's fintech products are precision-engineered for one outcome: transaction completion. Faster payments, seamless checkout, frictionless EMI onboarding. These systems perform exceptionally at conversion — but they do so by systematically reducing the space for deliberate financial thinking.</p>
+    <h2 class="section-title">Most fintech products minimize friction.<br>This one adds it — selectively.</h2>
+    <p class="section-body">Routine payments should be fast. But some transactions — unusually large amounts, unfamiliar payees, late-night spending — carry higher risk of regret or fraud. SafeSpend is a design exploration into contextual spending review: a system that surfaces relevant financial context at the moment of decision, without blocking or moralizing.</p>
 
     <div class="problem-grid" style="margin-top:40px">
       <div class="problem-card">
@@ -965,7 +967,7 @@
     </div>
 
     <div class="callout">
-      SafeSpend AI introduces an AI-assisted decision layer between user intent and financial commitment — not to block transactions, but to create meaningful pause.
+      SafeSpend introduces a contextual review layer between user intent and financial commitment — not to block transactions, but to create a meaningful moment of reflection at high-risk spending points.
     </div>
   </div>
 </section>
@@ -990,7 +992,7 @@
           <div class="table-header">
             <div class="table-header-cell">UI Element</div>
             <div class="table-header-cell">Typical Fintech</div>
-            <div class="table-header-cell">SafeSpend AI</div>
+            <div class="table-header-cell">SafeSpend</div>
           </div>
           <div class="table-row">
             <div class="table-cell feature">Primary CTA</div>
@@ -1126,7 +1128,7 @@
     </div>
 
     <div class="callout">
-      How might we design a preventive financial layer that improves decision quality without creating excessive friction?
+      How might we surface relevant financial context at the point of a high-risk payment — without adding friction to routine transactions or making users feel judged?
     </div>
   </div>
 </section>
@@ -1137,15 +1139,38 @@
 <section>
   <div class="container">
     <div class="section-label">Solution</div>
-    <h2 class="section-title">An AI decision layer, not a payment blocker</h2>
-    <p class="section-body">SafeSpend AI evaluates transaction timing, spending behavior, merchant trust, affordability risk, and emotional spending patterns — then determines whether intervention is necessary, and at what intensity.</p>
+    <h2 class="section-title">A spending review system, not a payment blocker</h2>
+    <p class="section-body">SafeSpend evaluates transaction timing, spending patterns, merchant context, and affordability signals — then determines whether a review prompt is warranted, and at what intensity. Low-risk transactions proceed uninterrupted. The system intervenes only when multiple signals indicate a user may benefit from pausing to reconsider.</p>
 
-    <!-- Feature 1: Emotional Spending -->
+    <!-- Signal Logic -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin:40px 0 0;">
+      <div class="section-label" style="margin-bottom:16px;">How review prompts are triggered</div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:24px;max-width:620px;">The system uses a combination of behavioral and transactional signals to decide whether a review prompt is warranted. No single signal triggers intervention — the logic requires multiple signals to align. Recommendations are probabilistic, not definitive. Users always retain full control.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div style="background:var(--surface2);border-radius:10px;padding:16px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Timing signals</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.6;">Unusual purchase hour · Transaction outside normal window · Rapid spending bursts</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:16px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Amount signals</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.6;">Significantly above monthly average · Large first-time amount to new payee · EMI commitment vs current balance</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:16px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Context signals</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.6;">Unfamiliar merchant category · Unverified UPI handle · Urgency language in payment note</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:14px 16px;background:rgba(77,159,255,0.06);border:1px solid rgba(77,159,255,0.15);border-radius:8px;font-size:13px;color:var(--muted);">
+        <strong style="color:var(--accent3);">Limitation:</strong> Pattern detection works well at the extremes — clear anomalies and clear routine. The middle ground (moderately unusual transactions) is where false positives are most likely and threshold calibration matters most.
+      </div>
+    </div>
+
+    <!-- Feature 1: High-Risk Spending Review -->
     <div class="feature-block">
       <div class="feature-text">
         <div class="feature-tag green">Feature 01</div>
-        <h3>Emotional Spending Intervention</h3>
-        <p>A user attempts an ₹18,000 sneaker purchase at 12:14 AM after already exceeding discretionary spending trends. The system detects unusual purchase timing, elevated spending frequency, and budget pressure indicators — and responds proportionally.</p>
+        <h3>High-Risk Spending Review</h3>
+        <p>A user attempts an ₹18,000 sneaker purchase at 12:14 AM — outside typical spending hours, and after already exceeding their monthly discretionary average. The system detects a combination of timing, amount, and budget signals, and surfaces a contextual review prompt rather than proceeding silently.</p>
         <ul class="bullet-list">
           <li>Projected balance after purchase</li>
           <li>Monthly spending comparison vs. average</li>
@@ -1170,7 +1195,7 @@
             <div class="breakdown-row"><span class="label">Budget status</span><span class="value danger">Exceeded</span></div>
             <div class="breakdown-divider"></div>
             <div class="stress-bar-wrap">
-              <div class="stress-bar-label"><span>Financial Pressure</span><span style="color:var(--accent2)">High</span></div>
+              <div class="stress-bar-label"><span>Spend vs. Monthly Avg</span><span style="color:var(--accent2)">+148%</span></div>
               <div class="stress-bar-track"><div class="stress-bar-fill"></div></div>
             </div>
           </div>
@@ -1185,11 +1210,10 @@
       <div class="feature-text">
         <div class="feature-tag orange">Feature 02</div>
         <h3>Scam Pattern Detection</h3>
-        <p>The AI system analyzes suspicious UPI handles, urgency language, abnormal payment behavior, and known scam pattern signatures. When risk thresholds are crossed, the interface explains — not just warns.</p>
+        <p>The review logic analyzes UPI handle patterns, transaction urgency signals, payment amount anomalies, and known scam pattern signatures. When multiple signals align, the interface explains the specific reasons — not just triggers a generic warning.</p>
         <ul class="bullet-list">
-          <li>Risk score with confidence level</li>
-          <li>Detected signals made visible</li>
-          <li>"Why this alert appeared" transparency</li>
+          <li>Risk signals made visible with plain explanations</li>
+          <li>"Why this review appeared" transparency</li>
           <li>Recommended action, not forced block</li>
           <li>Grounded in real-world scam taxonomies</li>
         </ul>
@@ -1198,9 +1222,9 @@
         <div class="screen-label">Scam Warning</div>
         <div class="scam-mock">
           <div class="scam-header">
-            <span class="scam-icon">🚨</span>
-            <div class="scam-title">High Risk Payment Detected</div>
-            <div class="scam-sub">This request matches known scam patterns</div>
+            <span class="scam-icon">⚠️</span>
+            <div class="scam-title">This payment looks unusual</div>
+            <div class="scam-sub">We noticed a few things worth reviewing</div>
           </div>
           <div class="scam-detail">
             <div class="scam-detail-row"><span class="key">UPI ID</span><span class="val" style="color:var(--accent2)">refund.help@ybl</span></div>
@@ -1209,8 +1233,8 @@
           </div>
           <div class="risk-meter">
             <div class="risk-row">
-              <span class="label">AI Confidence</span>
-              <span class="risk-score">91%</span>
+              <span class="label">Signals detected</span>
+              <span class="risk-score" style="font-size:14px;color:var(--accent2)">3 of 3</span>
             </div>
             <div class="signals">
               <div class="signal-badge">⚠ Urgency language detected</div>
@@ -1223,107 +1247,88 @@
       </div>
     </div>
 
-    <!-- Feature 3: EMI Transparency -->
-    <div class="feature-block">
-      <div class="feature-text">
-        <div class="feature-tag blue">Feature 03</div>
-        <h3>EMI Transparency Assistant</h3>
-        <p>Instead of displaying only ₹3,249/month, the interface visualizes total repayment, processing fees, stacked EMI burden, and projected financial stress — giving users the complete picture before commitment.</p>
-        <ul class="bullet-list">
-          <li>Full repayment amount surfaced prominently</li>
-          <li>Processing fee breakdown</li>
-          <li>Stacked debt burden visualization</li>
-          <li>Monthly affordability comparison</li>
-          <li>Financial stress projection over loan period</li>
-        </ul>
+    <!-- Extended scope note -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;margin-top:56px;">
+      <div class="feature-tag blue" style="margin-bottom:12px">Extended Scope — Explored, Not Primary</div>
+      <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:10px;color:var(--text)">EMI Transparency & Subscription Review</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:680px;">Two additional flows were sketched but kept out of the primary design focus: a full EMI repayment breakdown (surfacing total cost, not just monthly amount) and a recurring subscription review screen (flagging inactive or duplicate subscriptions). Both are coherent extensions of the same review logic — but including them as full features risks diluting the core use case. They're documented here as directions, not deliverables.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRODUCT CONSTRAINTS -->
+<section>
+  <div class="container">
+    <div class="section-label">Product Constraints</div>
+    <h2 class="section-title">What makes this hard to get right</h2>
+    <p class="section-body">Any system that adds friction to payments carries real risks. These constraints shaped every design decision — and would need to be explicitly managed in a production implementation.</p>
+
+    <div class="problem-grid" style="margin-top:40px;grid-template-columns:1fr 1fr 1fr">
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(255,107,53,0.1)">⚠️</div>
+        <div class="card-title">False Positives</div>
+        <div class="card-body">Legitimate payments incorrectly flagged erode trust quickly. A user interrupted during a routine transaction to a known contact will disengage from the system — and potentially the app.</div>
       </div>
-      <div class="phone-frame">
-        <div class="screen-label">EMI Transparency</div>
-        <div class="emi-mock">
-          <div class="emi-product-line">
-            <div>
-              <div style="font-size:11px;color:var(--muted)">Samsung Galaxy S25 Ultra</div>
-              <div class="emi-amount">₹78,000</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--accent)">₹3,249<span style="color:var(--muted);font-size:10px">/mo</span></div>
-              <div style="font-size:10px;color:var(--muted)">24 months</div>
-            </div>
-          </div>
-          <div class="emi-breakdown">
-            <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-family:'DM Mono',monospace;letter-spacing:0.08em;text-transform:uppercase">Full Repayment Breakdown</div>
-            <div class="breakdown-row"><span class="label">Principal</span><span class="value">₹78,000</span></div>
-            <div class="breakdown-row"><span class="label">Processing fee</span><span class="value warn">₹1,950</span></div>
-            <div class="breakdown-row"><span class="label">Total interest</span><span class="value warn">₹3,640</span></div>
-            <div class="breakdown-divider"></div>
-            <div class="breakdown-row"><span class="label" style="color:var(--text);font-weight:500">Total repayment</span><span class="value danger" style="font-size:14px">₹83,590</span></div>
-          </div>
-          <div style="background:var(--surface2);border-radius:8px;padding:10px 12px">
-            <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Debt burden with existing EMIs</div>
-            <div class="mini-bars">
-              <div class="mini-bar avg" style="height:40%"></div>
-              <div class="mini-bar avg" style="height:40%"></div>
-              <div class="mini-bar avg" style="height:40%"></div>
-              <div class="mini-bar this" style="height:100%"></div>
-              <div class="mini-bar this" style="height:100%"></div>
-              <div class="mini-bar this" style="height:100%"></div>
-            </div>
-            <div style="font-size:10px;color:var(--muted);margin-top:6px">Monthly EMI load increases by <span style="color:var(--accent2)">68%</span></div>
-          </div>
-        </div>
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(255,181,71,0.1)">🔔</div>
+        <div class="card-title">Interruption Fatigue</div>
+        <div class="card-body">Warnings repeated too frequently become ignored. The system's value depends on its ability to be quiet most of the time — which requires precise, high-confidence thresholds.</div>
+      </div>
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(77,159,255,0.1)">⏱️</div>
+        <div class="card-title">Latency & Urgency</div>
+        <div class="card-body">Users making urgent, time-sensitive payments (bill deadlines, emergency transfers) may be genuinely harmed by a review delay. The system cannot treat all high-amount transactions identically.</div>
+      </div>
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(255,107,53,0.1)">🔒</div>
+        <div class="card-title">Privacy Sensitivity</div>
+        <div class="card-body">Detecting spending patterns requires behavioural monitoring at the transaction level. This raises data consent and privacy questions — especially in a market where financial data sensitivity is high and user trust in apps is fragile.</div>
+      </div>
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(77,159,255,0.1)">⚖️</div>
+        <div class="card-title">Financial Autonomy</div>
+        <div class="card-body">Users have the right to make their own financial decisions, including risky ones. A review system that feels paternalistic or judgmental will be rejected — regardless of how accurate it is.</div>
+      </div>
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(0,229,160,0.1)">📋</div>
+        <div class="card-title">Regulatory Sensitivity</div>
+        <div class="card-body">Intervening in payment flows in India has regulatory implications under RBI guidelines. Any production version would need to operate within those constraints — and avoid language that implies guaranteed fraud prevention.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAILURE SCENARIO -->
+<section>
+  <div class="container">
+    <div class="section-label">Failure Scenario</div>
+    <h2 class="section-title">When the system gets it wrong</h2>
+    <p class="section-body">No risk detection system is error-free. Understanding what breaks — and how the system should respond — is as important as designing the happy path.</p>
+
+    <div class="callout" style="border-color:var(--accent2);background:rgba(255,107,53,0.04)">
+      <strong style="color:var(--accent2)">Scenario:</strong> A user is transferring ₹40,000 to a family member they haven't paid before. The amount is large, the payee is new, and the transfer happens at 11 PM — all three signals trigger the high-risk review flow. But this is a completely legitimate, urgent payment.
+    </div>
+
+    <div class="problem-grid" style="margin-top:32px">
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(255,107,53,0.1)">✕</div>
+        <div class="card-title">What breaks</div>
+        <div class="card-body">The user is interrupted during an urgent transfer. The review flow adds 30–60 seconds. If the tone feels accusatory ("This looks suspicious"), the user feels wrongly judged. They may lose trust in the system — or the app entirely.</div>
+      </div>
+      <div class="problem-card">
+        <div class="card-icon" style="background:rgba(0,229,160,0.1)">→</div>
+        <div class="card-title">Mitigation logic</div>
+        <div class="card-body">The review should explain specific signals calmly ("New payee · Large amount · Unusual time"), not assert fraud. The primary CTA should be "Continue" — not "Cancel." Override should be one tap, not buried. Users should never feel blocked, only informed.</div>
       </div>
     </div>
 
-    <!-- Feature 4: Subscription Leak -->
-    <div class="feature-block">
-      <div class="feature-text">
-        <div class="feature-tag yellow">Feature 04</div>
-        <h3>Subscription Leak Detection</h3>
-        <p>The system identifies inactive subscriptions, duplicate services, and recurring low-value expenses. Instead of presenting long transaction lists, the AI prioritizes likely forgotten subscriptions and high-waste recurring payments.</p>
-        <ul class="bullet-list">
-          <li>Active vs. unused subscription tracking</li>
-          <li>Monthly leakage amount surfaced clearly</li>
-          <li>Cancellation recommendations with one tap</li>
-          <li>Duplicate service detection</li>
-          <li>Forgotten subscription prioritization</li>
-        </ul>
-      </div>
-      <div class="phone-frame">
-        <div class="screen-label">Subscription Dashboard</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
-            <div style="font-size:12px;color:var(--muted)">Monthly leakage detected</div>
-            <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent2)">₹2,340</div>
-          </div>
-          <div style="background:var(--surface2);border-radius:10px;padding:12px">
-            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px">Likely Forgotten</div>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.15);border-radius:8px">
-                <div>
-                  <div style="font-size:13px;font-weight:500">LinkedIn Premium</div>
-                  <div style="font-size:10px;color:var(--muted)">Not used in 4 months</div>
-                </div>
-                <div style="font-size:12px;color:var(--accent2)">₹1,490/mo</div>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(255,181,71,0.06);border:1px solid rgba(255,181,71,0.15);border-radius:8px">
-                <div>
-                  <div style="font-size:13px;font-weight:500">Hotstar + Prime</div>
-                  <div style="font-size:10px;color:var(--muted)">Duplicate streaming</div>
-                </div>
-                <div style="font-size:12px;color:var(--warn)">₹499/mo</div>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface);border:1px solid var(--border);border-radius:8px">
-                <div>
-                  <div style="font-size:13px;font-weight:500">Grammarly Premium</div>
-                  <div style="font-size:10px;color:var(--muted)">Low usage last 60d</div>
-                </div>
-                <div style="font-size:12px;color:var(--muted)">₹351/mo</div>
-              </div>
-            </div>
-          </div>
-          <div style="background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--accent);text-align:center">Cancel all inactive — Save ₹1,989/mo</div>
-        </div>
-      </div>
+    <div class="problem-card" style="margin-top:20px">
+      <div class="card-title" style="margin-bottom:8px">Fallback behavior</div>
+      <div class="card-body">If a user dismisses the same review type 3+ times in a short period, the system should reduce sensitivity for that signal — treating repeated override as an implicit "I understand this risk." Warning fatigue is a failure state that the system itself should detect and adapt to.</div>
     </div>
   </div>
 </section>
@@ -1376,21 +1381,21 @@
   <div class="container">
     <div class="section-label">MVP Scope</div>
     <h2 class="section-title">Constrained intentionally</h2>
-    <p class="section-body">The first version focuses on the highest-impact, technically feasible interventions. Features excluded from MVP were not deprioritized for lack of value — they were deferred for launch realism.</p>
+    <p class="section-body">The project scope was deliberately narrowed to one primary problem: <strong style="color:var(--text)">high-risk spending interruption and review</strong>. A concept exploring four features simultaneously risks credibility — so secondary flows were documented but excluded from the primary design focus.</p>
 
     <div class="mvp-split">
       <div class="mvp-box included">
-        <div class="mvp-box-label">Included in V1</div>
-        <div class="mvp-item"><div class="mvp-dot"></div>Emotional Spending Intervention</div>
-        <div class="mvp-item"><div class="mvp-dot"></div>Scam Pattern Detection</div>
-        <div class="mvp-item"><div class="mvp-dot"></div>EMI Transparency Assistant</div>
+        <div class="mvp-box-label">Primary Focus (V1)</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>Contextual spending review prompts</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>High-risk transaction detection logic</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>Scam pattern signal surfacing</div>
       </div>
       <div class="mvp-box excluded">
-        <div class="mvp-box-label">Deferred Post-Launch</div>
-        <div class="mvp-item"><div class="mvp-dot"></div>AI Financial Coaching</div>
-        <div class="mvp-item"><div class="mvp-dot"></div>Automated Savings Systems</div>
-        <div class="mvp-item"><div class="mvp-dot"></div>Family Safety Features</div>
-        <div class="mvp-item"><div class="mvp-dot"></div>Cross-Bank Integrations</div>
+        <div class="mvp-box-label">Deferred / Exploratory</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>EMI transparency flow</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>Subscription leakage detection</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>AI financial coaching</div>
+        <div class="mvp-item"><div class="mvp-dot"></div>Cross-bank integrations</div>
       </div>
     </div>
   </div>
@@ -1401,40 +1406,40 @@
 <!-- METRICS -->
 <section>
   <div class="container">
-    <div class="section-label">Success Metrics</div>
+    <div class="section-label">Success Indicators</div>
     <h2 class="section-title">What good looks like</h2>
-    <p class="section-body">Both product and UX metrics are required. Scam prevention rates and impulsive purchase reduction tell one story. Warning engagement and false positive dissatisfaction tell another — and both matter.</p>
+    <p class="section-body">Without deployment or user testing at scale, these represent intended design goals — the measurable outcomes a functional version of this system would need to achieve to be considered successful. They are conceptual KPIs, not validated results.</p>
 
     <div class="metrics-grid">
       <div class="metric-card">
-        <div class="metric-label">Scam Approvals</div>
-        <div class="metric-value">↓ <span>38</span><span class="metric-unit">%</span></div>
-        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:38%"></div></div></div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Impulsive Purchases</div>
-        <div class="metric-value">↓ <span>24</span><span class="metric-unit">%</span></div>
-        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:24%"></div></div></div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">EMI Reconsideration</div>
-        <div class="metric-value">↑ <span>61</span><span class="metric-unit">%</span></div>
-        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:61%"></div></div></div>
+        <div class="metric-label">Risky Payment Approvals</div>
+        <div class="metric-value" style="font-size:16px;padding-top:6px">↓ Reduction</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5">Fewer high-risk transactions completing without review</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Warning Engagement</div>
-        <div class="metric-value"><span>73</span><span class="metric-unit">%</span></div>
-        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:73%"></div></div></div>
+        <div class="metric-value" style="font-size:16px;padding-top:6px">↑ Read rate</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5">Users reading context before dismissing, not instant skip</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">User Trust Score</div>
-        <div class="metric-value"><span>4.4</span><span class="metric-unit">/5</span></div>
-        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:88%"></div></div></div>
+        <div class="metric-label">False Positive Rate</div>
+        <div class="metric-value" style="font-size:16px;padding-top:6px">↓ Minimised</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5">Legitimate payments not interrupted unnecessarily</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">False Positive Dissatisfaction</div>
-        <div class="metric-value">↓ <span>12</span><span class="metric-unit">%</span></div>
-        <div class="metric-bar-wrap"><div class="metric-bar-track"><div class="metric-bar-fill" style="width:12%"></div></div></div>
+        <div class="metric-label">Post-review Cancellations</div>
+        <div class="metric-value" style="font-size:16px;padding-top:6px">↑ Tracked</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5">Users choosing to cancel after seeing review context</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Alert Fatigue Signal</div>
+        <div class="metric-value" style="font-size:16px;padding-top:6px">↓ Controlled</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5">Repeat-dismissal rate tracked to detect warning burnout</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">User-reported Trust</div>
+        <div class="metric-value" style="font-size:16px;padding-top:6px">↑ Maintained</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5">System feels helpful, not paternalistic or intrusive</div>
       </div>
     </div>
   </div>
@@ -1446,19 +1451,19 @@
 <div class="container">
   <div class="outcome-section">
     <div class="shift-pill">
-      <span class="from">Transaction interfaces</span>
+      <span class="from">Transaction speed</span>
       <span class="arrow">→</span>
-      <span class="to">Decision systems</span>
+      <span class="to">Decision quality</span>
     </div>
-    <h2>A different design philosophy for fintech</h2>
-    <p>This project reframed the design challenge from making transactions faster to making decisions better. The biggest challenge was balancing user protection, business goals, behavioral psychology, and friction management — without creating intrusive or paternalistic experiences.</p>
-    <p style="margin-top:20px">SafeSpend AI demonstrates how AI-assisted fintech systems can shift from transaction optimization toward decision-quality optimization. Instead of accelerating spending behavior, the product introduces contextual friction that helps users make safer and more informed financial decisions — on their terms.</p>
+    <h2>A focused product concept, not a complete system</h2>
+    <p>SafeSpend is a design exploration into contextual spending review — not a deployed product. The core question it explores: can a fintech product add friction selectively and helpfully, without damaging user trust or blocking legitimate payments?</p>
+    <p style="margin-top:20px">The most important constraint discovered: the system's credibility depends entirely on how rarely it fires, and how clearly it explains itself when it does. An over-eager review system becomes noise. A well-calibrated one becomes a tool users trust.</p>
   </div>
 </div>
 
 <footer>
   <div class="container">
-    SafeSpend AI · Product Design Case Study · 3-Week Project
+    SafeSpend · Product Design Case Study · 3-Week Project
   </div>
 </footer>
 
