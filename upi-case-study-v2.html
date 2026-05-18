@@ -458,7 +458,60 @@ footer {
   letter-spacing: .12em; text-transform: uppercase; color: var(--dim);
 }
 
-/* ─── ANIMATIONS ─── */
+/* ─── ARTIFACT SECTIONS ─── */
+.artifact-frame {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; margin: 36px 0;
+}
+.artifact-frame img {
+  width: 100%; display: block;
+}
+.artifact-caption {
+  padding: 16px 24px; border-top: 1px solid var(--border);
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  display: flex; align-items: center; gap: 10px;
+}
+.artifact-caption::before { content: '↑'; color: var(--red); }
+
+.artifact-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 36px 0;
+}
+
+.iter-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+.iter-card-img { width: 100%; display: block; }
+.iter-card-body { padding: 20px; }
+.iter-card-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px;
+}
+.iter-card-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.iter-card-body p { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 0; }
+
+.logic-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px; margin: 32px 0;
+}
+.logic-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 24px;
+}
+.logic-card-num {
+  font-family: 'Fraunces', serif; font-style: italic;
+  font-size: 2rem; color: var(--dim); line-height: 1; margin-bottom: 12px;
+}
+.logic-card-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.logic-card-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+@media (max-width: 900px) {
+  .artifact-grid, .logic-row { grid-template-columns: 1fr; }
+}
+
+
 .fade { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
 .fade.on { opacity: 1; transform: none; }
 
@@ -493,7 +546,7 @@ footer {
   <div class="hero-ring"></div>
   <div class="hero-ring2"></div>
   <div class="hero-content fade">
-    <div class="eyebrow"><span class="eyebrow-dot"></span> Product Design · Fintech · Behavioral UX</div>
+    <div class="eyebrow"><span class="eyebrow-dot"></span> Product Design · Fintech · Interaction Design</div>
     <h1>Designing a<br><em>Risk-Aware</em> UX<br>to Stop UPI Fraud</h1>
     <p class="hero-sub">Users aren't careless. The UX is just designed for speed — not safety. This case study explores a behavioral intervention system that makes risk visible before it's too late.</p>
     <div class="hero-chips">
@@ -501,12 +554,12 @@ footer {
       <span class="chip">Behavioral Design</span>
       <span class="chip">Mobile UX</span>
       <span class="chip">Fraud Systems</span>
-      <span class="chip">Nudge Architecture</span>
+      <span class="chip">Nudge Design</span>
     </div>
     <div class="hero-stats">
       <div class="hstat"><span class="hstat-n">₹11K Cr</span><span class="hstat-l">Annual Fraud Losses</span></div>
       <div class="hstat"><span class="hstat-n">&lt;3s</span><span class="hstat-l">Avg Decision Time</span></div>
-      <div class="hstat"><span class="hstat-n">82%</span><span class="hstat-l">Declined Similar Requests</span></div>
+      <div class="hstat"><span class="hstat-n">82%</span><span class="hstat-l">Example Social Proof Signal</span></div>
     </div>
   </div>
 </div>
@@ -575,6 +628,38 @@ footer {
   </div>
 </section>
 
+<!-- ════ 02.5 EARLY EXPLORATION ════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-label fade">02.5 · Early Exploration & System Thinking</div>
+    <h2 class="fade">Mapping the problem<br>before designing <em>the answer</em></h2>
+    <div class="fade">
+      <p style="max-width:680px;">Before any screen was designed, the core design challenge needed to be framed as a system: <strong>when should the UX intervene, and by how much?</strong> The rough flow sketch below captures that initial thinking — moving from the current flat flow to a risk-branching model where friction scales with threat level.</p>
+      <p style="max-width:680px;">Key principle established here: <em>risk drives friction, not the other way around.</em> Every extra step should be earned by the risk level — never applied uniformly.</p>
+    </div>
+
+    <div class="artifact-frame fade">
+      <img src="flow.png" alt="Rough flow sketch showing proposed adaptive flow with risk-based intervention branches for low, medium, and high risk transactions">
+      <div class="artifact-caption">Artefact 1 · Rough flow sketch — adaptive risk-based intervention model</div>
+    </div>
+
+    <div class="col2 fade" style="margin-top: 40px;">
+      <div>
+        <h3 style="margin-bottom:12px;">What this sketch resolved</h3>
+        <p>The current flow treats every payment identically — optimised for speed. The sketch establishes the core thesis: <strong>three distinct UX paths</strong> keyed to a real-time risk score. Low risk gets no extra friction. Medium risk gets a soft contextual review. High risk gets a hard interrupt before any confirmation.</p>
+        <p>The recovery path (user can contact support if they believe it's a mistake) was also sketched early — establishing that the system should never trap users, only slow them down.</p>
+      </div>
+      <div>
+        <div class="icard b">
+          <div class="icard-ico">📐</div>
+          <div class="icard-title">Early learnings that shaped everything</div>
+          <div class="icard-body">Too much friction leads to abandonment. Repetitive warnings get ignored. High-risk users need interruption <em>before</em> confirmation, not after. Speed must be preserved for trusted payments.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ════ 03 SOLUTION ════ -->
 <section>
   <div class="wrap">
@@ -636,6 +721,64 @@ footer {
           <div class="flow-node n-high">61+</div>
           <div class="flow-arr">↓</div>
           <div class="flow-node result n-high">Interrupt + Friction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ 03.5 ITERATION & INTERVENTION EVOLUTION ════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-label fade">03.5 · Iteration & Intervention Evolution</div>
+    <h2 class="fade">Three warning directions.<br><em>One survived.</em></h2>
+    <div class="fade">
+      <p style="max-width:680px;">Knowing the system architecture wasn't enough. The harder question was: <strong>what should a warning actually say and feel like?</strong> Three distinct approaches were explored. Two were rejected. The reasoning behind those rejections shaped the final design more than the winning direction itself.</p>
+    </div>
+
+    <div class="artifact-frame fade" style="margin-bottom:0;">
+      <img src="warning.png" alt="Rejected warning comparison showing three approaches: too technical with risk scores, too scary with fear-based messaging, and the selected contextual guidance approach">
+      <div class="artifact-caption">Artefact 2 · Rejected warning comparison — three directions, one selected</div>
+    </div>
+
+    <div class="col3 fade" style="margin-top:24px;">
+      <div class="icard r">
+        <div class="icard-ico">✕</div>
+        <div class="icard-title">Rejected: Too Technical</div>
+        <div class="icard-body">Risk scores and jargon created anxiety without context. Users felt they were reading a system error, not receiving guidance. They ignored it and proceeded anyway.</div>
+      </div>
+      <div class="icard r">
+        <div class="icard-ico">✕</div>
+        <div class="icard-title">Rejected: Too Scary</div>
+        <div class="icard-body">Fear-based language ("You might be getting scammed") caused panic and shamed users who were paying legitimately. It also built warning fatigue faster than any other approach.</div>
+      </div>
+      <div class="icard g">
+        <div class="icard-ico">✓</div>
+        <div class="icard-title">Selected: Contextual Guidance</div>
+        <div class="icard-body">Calm tone, plain language, and specific signals ("New payee · High amount · Unusual time") gave users context and control. Informs without alarming. Supports, doesn't shame.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:56px;" class="fade">
+      <h3 style="margin-bottom:24px;">Low-fidelity wireframe exploration</h3>
+      <p style="max-width:680px;margin-bottom:32px;">In parallel, early low-fi wireframes stress-tested how the warning journey would feel across screens. The goal: warn and support users <strong>without creating fear or blocking legitimate payments.</strong> Each wireframe surface a failure mode — which then drove the next iteration.</p>
+    </div>
+
+    <div class="artifact-frame fade">
+      <img src="low_fi.png" alt="Low-fidelity wireframe exploration showing four screens: transaction review, first-pass warning, intent verification, and confirmation interruption before PIN">
+      <div class="artifact-caption">Artefact 3 · Low-fi wireframe exploration — transaction review → warning → intent verification → confirmation</div>
+    </div>
+
+    <div class="col2 fade" style="margin-top:32px;">
+      <div>
+        <h3 style="margin-bottom:12px;">What the low-fi surfaced</h3>
+        <p>Screen 1 (Transaction Review) overwhelmed users with information — needing hierarchy and clarity. Screen 2 (First-Pass Warning) was too technical and fear-inducing, with instructions nobody read. Screen 3 (Intent Verification) was better — it gave context and control, but still had too many steps. Screen 4 (Confirmation Interruption) felt the most supportive — calm, not alarming, with a summary that helped users recall and decide.</p>
+      </div>
+      <div>
+        <div class="icard o">
+          <div class="icard-ico">🔄</div>
+          <div class="icard-title">Key iteration decisions</div>
+          <div class="icard-body">Simplified text and reduced cognitive load. Changed tone from alarming → informative. Replaced instruction lists with contextual guidance. Introduced a review summary card before the PIN step. Removed "Continue Anyway" as a primary CTA.</div>
         </div>
       </div>
     </div>
@@ -766,6 +909,43 @@ footer {
   </div>
 </section>
 
+<!-- ════ 04.5 INTERACTION LOGIC EXPLORATION ════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-label fade">04.5 · Interaction Logic Exploration</div>
+    <h2 class="fade">Connecting system thinking<br>to <em>screen behavior</em></h2>
+    <div class="fade">
+      <p style="max-width:680px;">Before finalising the UI, the interaction logic needed to be explicit: how does the system escalate, what can a user override, and where does the recovery path sit? These questions were worked through at the logic level — not the visual level — to ensure the final screens reflected intentional decisions, not visual guesswork.</p>
+    </div>
+
+    <div class="logic-row fade">
+      <div class="logic-card">
+        <div class="logic-card-num">01</div>
+        <div class="logic-card-title">State Transitions</div>
+        <div class="logic-card-body">Each risk tier maps to a distinct UI state — not just a visual skin over the same layout. Low risk: normal flow. Medium: warning banner injected into the same screen. High: full-screen interrupt replaces the payment screen entirely before any CTA is accessible.</div>
+      </div>
+      <div class="logic-card">
+        <div class="logic-card-num">02</div>
+        <div class="logic-card-title">Escalation Logic</div>
+        <div class="logic-card-body">High-risk intervention fires in four deliberate steps: alert interrupt → evidence screen (why we're flagging this) → friction gate (confirm intent) → PIN reminder (irreversibility notice). Each step has a single behavioral goal. No step is decorative.</div>
+      </div>
+      <div class="logic-card">
+        <div class="logic-card-num">03</div>
+        <div class="logic-card-title">Override & Recovery Path</div>
+        <div class="logic-card-body">Users are never locked out. If they believe the flag is a mistake, they can contact support at any point. This path was designed to be visible but not prominent — available without being an invitation to bypass the intervention.</div>
+      </div>
+    </div>
+
+    <div class="fade" style="margin-top:8px;">
+      <div class="icard b" style="max-width:640px;">
+        <div class="icard-ico">⚖️</div>
+        <div class="icard-title">The core tension this logic resolves</div>
+        <div class="icard-body">The system must interrupt decisively for high-risk transactions — but it must never trap or shame users who are paying legitimately. The escalation path adds friction. The override path restores trust. Both are essential.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ════ 05 DESIGN DECISIONS ════ -->
 <section>
   <div class="wrap">
@@ -840,7 +1020,7 @@ footer {
       <div class="imp">
         <span class="imp-ico">📉</span>
         <div class="imp-val">↓ High-Risk Approvals</div>
-        <div class="imp-lbl">Target 40–60% reduction in fraudulent payment completions</div>
+        <div class="imp-lbl">Designed to reduce risky payment approvals through friction and informed decision-making</div>
       </div>
       <div class="imp">
         <span class="imp-ico">⏱</span>
@@ -884,17 +1064,17 @@ footer {
 <!-- ════ CONCLUSION ════ -->
 <div class="outro fade">
   <div class="sec-label" style="justify-content:center;margin-bottom:20px;">Conclusion</div>
-  <h2>Fraud is a <em>decision design</em> problem — not a backend one.</h2>
+  <h2>Fraud is a <em>decision design</em> problem — not just a backend one.</h2>
   <p>The signals to detect fraud already exist. The gap is the last three seconds — between a user seeing a request and tapping approve. This system closes that gap by making risk visible, decisions deliberate, and the safe path effortless.</p>
   <p style="color:var(--muted);max-width:480px;margin:0 auto 40px;">The technology is a means. The outcome is a user who pauses, reads, and chooses — instead of tapping past a warning they've been trained to ignore.</p>
   <div class="tags">
-    <span class="tag">Behavioral UX</span>
+    <span class="tag">Behavioral Design</span>
     <span class="tag">Risk Systems</span>
     <span class="tag">Fintech</span>
     <span class="tag">Nudge Design</span>
     <span class="tag">Mobile UX</span>
     <span class="tag">Fraud Prevention</span>
-    <span class="tag">Decision Architecture</span>
+    <span class="tag">Interaction Design</span>
   </div>
 </div>
 
